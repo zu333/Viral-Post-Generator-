@@ -1,0 +1,6 @@
+{
+  "name": "Viral FB Post Generator",
+  "description": "Generate highly engaging, viral, and SEO-optimized Facebook posts with AI. Designed for Tooltea integration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

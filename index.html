@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Viral FB Post Generator ☕ | Tooltea Suite</title>
+    
+    <!-- Google Fonts for Editorial & Tech Feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (via CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Tailwind Configuration to match the 'Tooltea' Aesthetic -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              matcha: {
+                50: '#f7fee7',
+                100: '#ecfccb',
+                200: '#d9f99d',
+                300: '#bef264',
+                400: '#a3e635',
+                500: '#84cc16',
+                600: '#65a30d',
+                700: '#4d7c0f', // Primary Accent Matcha Green
+                800: '#3f6212',
+                900: '#365314',
+              },
+              cream: {
+                50: '#fcfbf9',  // Base warm background
+                100: '#f7f5f0',
+                200: '#edeae1',
+                300: '#ded9cb',
+                400: '#c5bcab',
+                500: '#a19683',
+              },
+              amberAccent: {
+                50: '#fffbeb',
+                100: '#fef3c7',
+                200: '#fde68a',
+                500: '#f59e0b',
+                600: '#d97706',
+                700: '#b45309',
+              }
+            },
+            fontFamily: {
+              serif: ['Playfair Display', 'Georgia', 'serif'],
+              sans: ['Inter', 'system-ui', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            }
+          }
+        }
+      }
+    </script>
+    
+    <!-- Custom Style Block for Scrollbars and Empty Ad Slots -->
+    <style>
+      /* Hide ad-slots if they are empty (no elements or text), per Tooltea guidelines */
+      #ad-slot:empty {
+        display: none !important;
+      }
+      
+      /* Subtle transitions for buttons and cards */
+      .smooth-transition {
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      /* Custom elegant scrollbar for textareas */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #ded9cb;
+        border-radius: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #c5bcab;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-cream-50 flex flex-col justify-between py-6 px-4 font-sans text-slate-800 antialiased">
+
+    <!-- Top Wrapper (Header, Ad Slot, Main Card) -->
+    <div class="w-full max-w-2xl mx-auto flex-grow flex flex-col justify-center">
+      
+      <!-- ==========================================
+           AD SLOT (TOP)
+           ==========================================
+           Insert your Adsterra, Monetag, or AdSense banner script inside this div.
+           If left completely empty, it will auto-hide via Tailwind and CSS. -->
+      <div id="ad-slot" class="w-full mb-6 text-center text-xs text-cream-400 border border-dashed border-cream-300 rounded-lg p-2 bg-cream-100/50">
+        <!-- YOUR AD SCRIPT OR CODE HERE -->
+      </div>
+
+      <!-- Header Section -->
+      <header class="text-center mb-8 flex flex-col items-center">
+        <div class="flex items-center justify-between w-full mb-4 border-b border-cream-200/60 pb-3">
+          <a href="https://teatool.vercel.app" class="inline-flex items-center gap-2 px-3 py-1.5 bg-cream-100 hover:bg-cream-200 text-slate-700 text-xs font-semibold rounded-lg border border-cream-300 transition-all cursor-pointer shadow-sm">
+            <svg class="h-4 w-4 text-matcha-700 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            <span>Home 🏠</span>
+          </a>
+          <span class="inline-flex items-center gap-1 px-3 py-1 bg-matcha-100 text-matcha-800 rounded-full text-xs font-semibold tracking-wider uppercase">
+            Tooltea Suite 🍵
+          </span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-serif font-bold text-slate-900 tracking-tight mb-2">
+          Viral Post Generator ☕
+        </h1>
+        <p class="text-sm md:text-base text-cream-500 max-w-md mx-auto">
+          Transform simple descriptions and links into high-converting, viral Facebook posts optimized for engagement.
+        </p>
+      </header>
+
+      <!-- Main Application Card -->
+      <main class="bg-white rounded-2xl shadow-md border border-cream-200 p-6 md:p-8 space-y-6 smooth-transition relative overflow-hidden">
+        
+        <!-- Tea Decor Accent Line -->
+        <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-matcha-600 via-matcha-700 to-amberAccent-600"></div>
+
+        <!-- Inline Notification / Error Banner -->
+        <div id="error-banner" class="hidden flex items-start gap-2.5 bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-sm smooth-transition">
+          <svg class="h-5 w-5 text-red-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div class="flex-1">
+            <h4 class="font-semibold text-red-800">Oops! Something went wrong</h4>
+            <p id="error-text" class="text-xs mt-0.5 text-red-700">Please fill out all required fields.</p>
+          </div>
+        </div>
+
+        <!-- Input Form Section -->
+        <form id="post-form" class="space-y-5" onsubmit="event.preventDefault();">
+          
+          <!-- Description Textarea -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center">
+              <label for="description" class="block text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Post Description <span class="text-red-500">*</span>
+              </label>
+              <span id="char-count" class="text-[10px] font-mono text-cream-400">0 characters</span>
+            </div>
+            <textarea 
+              id="description" 
+              rows="4" 
+              required 
+              class="w-full rounded-xl border border-cream-300 bg-cream-50/50 p-3.5 text-sm text-slate-800 placeholder-slate-400 focus:border-matcha-600 focus:bg-white focus:ring-2 focus:ring-matcha-200 outline-none transition custom-scrollbar"
+              placeholder="E.g., Try our new free background remover tool that works instantly with one click. It leaves transparent backgrounds perfect for social media ads and e-commerce product photos..."></textarea>
+          </div>
+
+          <!-- Grid for URL and Tone Selectors -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <!-- URL Input -->
+            <div class="space-y-1.5">
+              <label for="url" class="block text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Target Link / URL <span class="text-cream-400 text-[10px] font-normal">(Optional)</span>
+              </label>
+              <div class="relative rounded-xl border border-cream-300 bg-cream-50/50 focus-within:border-matcha-600 focus-within:bg-white focus-within:ring-2 focus-within:ring-matcha-200 transition">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 pointer-events-none">
+                  <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                  </svg>
+                </span>
+                <input 
+                  type="url" 
+                  id="url" 
+                  class="w-full pl-10 pr-3.5 py-3 text-sm text-slate-800 bg-transparent placeholder-slate-400 outline-none rounded-xl" 
+                  placeholder="https://www.tooltea.com/remover">
+              </div>
+            </div>
+
+            <!-- Tone Dropdown Selector -->
+            <div class="space-y-1.5">
+              <label for="tone" class="block text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Selected Post Tone
+              </label>
+              <select 
+                id="tone" 
+                class="w-full rounded-xl border border-cream-300 bg-cream-50/50 p-3 text-sm text-slate-800 focus:border-matcha-600 focus:bg-white focus:ring-2 focus:ring-matcha-200 outline-none transition appearance-none cursor-pointer"
+                style="background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 20 20%22%3E%3Cpath stroke=%22%236b7280%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%221.5%22 d=%22m6 8 4 4 4-4%22/%3E%3C/svg%3E'); background-position: right 0.75rem center; background-repeat: no-repeat; background-size: 1.25rem auto; padding-right: 2.5rem;">
+                <option value="Viral" selected>🔥 Viral (Default)</option>
+                <option value="Professional">💼 Professional</option>
+                <option value="Engaging">💬 Engaging</option>
+                <option value="Funny">😆 Funny</option>
+              </select>
+            </div>
+
+          </div>
+
+          <!-- Action Button -->
+          <button 
+            type="button" 
+            id="generate-btn" 
+            onclick="generatePost()"
+            class="w-full py-3.5 px-4 bg-matcha-700 hover:bg-matcha-800 text-white font-semibold rounded-xl shadow-md transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-matcha-500 focus:ring-offset-2">
+            <span>Generate Post 🚀</span>
+          </button>
+
+        </form>
+
+        <!-- Output Results Section (Initially Hidden) -->
+        <div id="output-section" class="hidden space-y-4 pt-6 border-t border-cream-200 smooth-transition">
+          
+          <!-- Title & Copy Action -->
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-matcha-600 animate-pulse"></span>
+              Generated Facebook Post
+            </span>
+            <button 
+              id="copy-btn" 
+              onclick="copyToClipboard()"
+              class="flex items-center gap-1.5 px-3.5 py-1.5 bg-cream-100 hover:bg-cream-200 text-slate-700 text-xs font-semibold rounded-lg border border-cream-300 transition-all cursor-pointer">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+              </svg>
+              <span id="copy-btn-text">Copy Post</span>
+            </button>
+          </div>
+
+          <!-- Styled Output Container -->
+          <div class="relative bg-cream-50/70 border border-cream-200 rounded-xl p-5 md:p-6 shadow-inner">
+            <div 
+              id="result-box" 
+              class="text-sm md:text-base text-slate-800 leading-relaxed whitespace-pre-wrap font-sans">
+            </div>
+          </div>
+
+          <!-- Engagement Tip -->
+          <p class="text-[11px] text-cream-500 text-center italic">
+            💡 Pro-Tip: Add a high-quality relevant image to your Facebook post to boost organic reach and click-through rates!
+          </p>
+
+        </div>
+
+      </main>
+
+      <!-- ==========================================
+           AD SLOT (BOTTOM)
+           ==========================================
+           Insert your Adsterra, Monetag, or AdSense banner script inside this div.
+           If left completely empty, it will auto-hide via Tailwind and CSS. -->
+      <div id="ad-slot" class="w-full mt-6 text-center text-xs text-cream-400 border border-dashed border-cream-300 rounded-lg p-2 bg-cream-100/50">
+        <!-- YOUR AD SCRIPT OR CODE HERE -->
+      </div>
+
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="text-center py-4 border-t border-cream-200/50 mt-8">
+      <p class="text-xs text-cream-500 font-mono">
+        &copy; 2026 Tooltea. All Rights Reserved. Crafted for Social Media Excellence.
+      </p>
+    </footer>
+
+    <!-- Toast Notification Widget -->
+    <div 
+      id="toast" 
+      class="fixed bottom-5 right-5 z-50 transform translate-y-10 opacity-0 transition-all duration-300 pointer-events-none bg-slate-950 text-white text-xs font-semibold py-3 px-4 rounded-xl shadow-lg flex items-center gap-2">
+      <span id="toast-icon">✅</span>
+      <span id="toast-message">Copied successfully!</span>
+    </div>
+
+    <!-- ==========================================
+         JAVASCRIPT & API LOGIC
+         ========================================== -->
+    <script>
+      // -------------------------------------------------------------
+      // ADMIN CONFIGURATION
+      // -------------------------------------------------------------
+      // 1. Enter your Google Gemini API Key here (Required for production hosting):
+      const API_KEY = "YOUR_API_KEY_HERE";
+      
+      // Character Count Counter
+      const descInput = document.getElementById("description");
+      const charCountLabel = document.getElementById("char-count");
+      
+      descInput.addEventListener("input", () => {
+        const length = descInput.value.length;
+        charCountLabel.textContent = `${length.toLocaleString()} character${length === 1 ? '' : 's'}`;
+      });
+
+      // -------------------------------------------------------------
+      // POST GENERATION CONTROLLER
+      // -------------------------------------------------------------
+      async function generatePost() {
+        const description = document.getElementById("description").value.trim();
+        const url = document.getElementById("url").value.trim();
+        const tone = document.getElementById("tone").value;
+        const btn = document.getElementById("generate-btn");
+        const errorBanner = document.getElementById("error-banner");
+        const errorText = document.getElementById("error-text");
+        const outputSection = document.getElementById("output-section");
+        const resultBox = document.getElementById("result-box");
+
+        // Reset display state
+        errorBanner.classList.add("hidden");
+        
+        // Validation check
+        if (!description) {
+          errorText.textContent = "Please fill out the Description Box (it is required for generating the post).";
+          errorBanner.classList.remove("hidden");
+          errorBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+
+        // Set Button Loading State
+        const originalBtnHTML = btn.innerHTML;
+        btn.disabled = true;
+        btn.classList.add("opacity-75", "cursor-not-allowed");
+        btn.innerHTML = `
+          <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>Generating Post...</span>
+        `;
+
+        // Build Prompt according to requirements
+        const prompt = `Act as an expert Social Media Marketer. Take the following details and create a viral Facebook post. Tone: ${tone}. Short Details: ${description}. Link: ${url || "No Link Provided"}. Structure the post into 4 parts: 1. A catchy hook as the first line. 2. Main benefits using bullet points and relevant emojis. 3. A clear Call to Action pointing to the link. 4. 3 to 5 trending and relevant hashtags. Write naturally and avoid sounding robotic.`;
+
+        try {
+          let textResult = "";
+
+          // Determine whether we are in dev/preview (use server proxy) or production (use embedded key)
+          if (API_KEY && API_KEY !== "YOUR_API_KEY_HERE") {
+            // Production Direct REST Fetch to Google Gemini API (gemini-3.5-flash)
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${API_KEY}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                contents: [{
+                  parts: [{
+                    text: prompt
+                  }]
+                }]
+              })
+            });
+
+            if (!response.ok) {
+              const errData = await response.json();
+              throw new Error(errData.error?.message || `HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            textResult = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+            
+            if (!textResult) {
+              throw new Error("No response returned from the Gemini API model. Please try again.");
+            }
+          } else {
+            // Live Preview Mode: Calls the AI Studio server proxy to generate securely
+            const response = await fetch("/api/generate", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ prompt: prompt })
+            });
+
+            if (!response.ok) {
+              const errData = await response.json();
+              throw new Error(errData.error || `HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            textResult = data.text || "";
+          }
+
+          // Populate the Output Section
+          resultBox.textContent = textResult;
+          outputSection.classList.remove("hidden");
+          
+          // Smooth scroll to results
+          setTimeout(() => {
+            outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 100);
+
+        } catch (error) {
+          console.error("Generation Error:", error);
+          errorText.textContent = error.message || "Failed to generate post. Please check your network connection or API Key configuration.";
+          errorBanner.classList.remove("hidden");
+          errorBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } finally {
+          // Restore Button State
+          btn.disabled = false;
+          btn.classList.remove("opacity-75", "cursor-not-allowed");
+          btn.innerHTML = originalBtnHTML;
+        }
+      }
+
+      // -------------------------------------------------------------
+      // COPY TO CLIPBOARD ENGINE
+      // -------------------------------------------------------------
+      async function copyToClipboard() {
+        const text = document.getElementById("result-box").textContent;
+        const copyBtnText = document.getElementById("copy-btn-text");
+        const copyBtn = document.getElementById("copy-btn");
+
+        if (!text) return;
+
+        try {
+          await navigator.clipboard.writeText(text);
+          
+          // Temporary Visual feedback on button
+          const originalHTML = copyBtn.innerHTML;
+          copyBtn.innerHTML = `
+            <svg class="h-4 w-4 text-matcha-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span class="text-matcha-800">Copied! ✅</span>
+          `;
+          showToast("Post copied to clipboard!");
+          
+          setTimeout(() => {
+            copyBtn.innerHTML = originalHTML;
+          }, 2000);
+
+        } catch (err) {
+          console.error("Clipboard copy failed:", err);
+          alert("Clipboard copy failed. Please select the text and copy manually.");
+        }
+      }
+
+      // -------------------------------------------------------------
+      // TOAST NOTIFICATION UTILITY
+      // -------------------------------------------------------------
+      function showToast(message, icon = "✅") {
+        const toast = document.getElementById("toast");
+        const msgEl = document.getElementById("toast-message");
+        const iconEl = document.getElementById("toast-icon");
+        
+        msgEl.textContent = message;
+        iconEl.textContent = icon;
+        
+        toast.classList.remove("opacity-0", "translate-y-10", "pointer-events-none");
+        toast.classList.add("opacity-100", "translate-y-0");
+        
+        setTimeout(() => {
+          toast.classList.add("opacity-0", "translate-y-10", "pointer-events-none");
+          toast.classList.remove("opacity-100", "translate-y-0");
+        }, 2500);
+      }
+    </script>
+  </body>
+</html>
