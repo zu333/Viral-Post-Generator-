@@ -1,6 +1,6 @@
 {
   "name": "Viral FB Post Generator",
-  "description": "Generate highly engaging, viral, and SEO-optimized Facebook posts with AI. Designed for Tooltea integration.",
+  "description": "Viral FB Post Generator is a highly engaging, AI-powered copywriting utility designed for the Tooltea suite that transforms short descriptions and links into viral, SEO-optimized Facebook posts.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -39,13 +39,37 @@ async function startServer() {
         }
       });
 
-      // Call the recommended Gemini 3.5 Flash model
-      const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
-        contents: prompt,
-      });
+      let text = "";
 
-      const text = response.text;
+      // Helper function to call generateContent with a specific model
+      const generateWithModel = async (modelName: string) => {
+        console.log(`Attempting generation with model: ${modelName}...`);
+        const response = await ai.models.generateContent({
+          model: modelName,
+          contents: prompt,
+        });
+        return response.text;
+      };
+
+      // Helper function to wrap a promise with a timeout
+      const withTimeout = (promise: Promise<any>, ms: number) => {
+        return Promise.race([
+          promise,
+          new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), ms))
+        ]);
+      };
+
+      try {
+        // Try gemini-3.5-flash first with a 9-second timeout
+        text = await withTimeout(generateWithModel("gemini-3.5-flash"), 9000);
+        console.log("Successfully generated post using gemini-3.5-flash.");
+      } catch (err: any) {
+        console.warn(`gemini-3.5-flash failed or timed out (${err.message}). Falling back to gemini-3.1-flash-lite...`);
+        // Fallback to gemini-3.1-flash-lite
+        text = await generateWithModel("gemini-3.1-flash-lite");
+        console.log("Successfully generated post using fallback model gemini-3.1-flash-lite.");
+      }
+
       if (!text) {
         throw new Error("The Gemini model returned an empty response. Please try again.");
       }
