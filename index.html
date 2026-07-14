@@ -350,8 +350,19 @@
             });
 
             if (!response.ok) {
-              const errData = await response.json();
-              throw new Error(errData.error?.message || `HTTP error! Status: ${response.status}`);
+              let errMsg = `HTTP error! Status: ${response.status}`;
+              try {
+                const errData = await response.json();
+                errMsg = errData.error?.message || errData.error || errMsg;
+              } catch (e) {
+                try {
+                  const textErr = await response.text();
+                  if (textErr) {
+                    errMsg = textErr.substring(0, 200);
+                  }
+                } catch (_) {}
+              }
+              throw new Error(errMsg);
             }
 
             const data = await response.json();
@@ -371,8 +382,19 @@
             });
 
             if (!response.ok) {
-              const errData = await response.json();
-              throw new Error(errData.error || `HTTP error! Status: ${response.status}`);
+              let errMsg = `HTTP error! Status: ${response.status}`;
+              try {
+                const errData = await response.json();
+                errMsg = errData.error || errMsg;
+              } catch (e) {
+                try {
+                  const textErr = await response.text();
+                  if (textErr) {
+                    errMsg = textErr.substring(0, 200);
+                  }
+                } catch (_) {}
+              }
+              throw new Error(errMsg);
             }
 
             const data = await response.json();
