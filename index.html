@@ -279,7 +279,9 @@
       // ADMIN CONFIGURATION
       // -------------------------------------------------------------
       // 1. Enter your Google Gemini API Key here (Required for production hosting):
-      const API_KEY = "AQ.Ab8RN6LyIThntKoiWRk9PTjf0KIF9phR2ch7dUxXT_FL5XT7BQ";
+      // NOTE: In this development/preview environment, leave this as "YOUR_API_KEY_HERE"
+      // because the app automatically uses the secure server-side proxy.
+      const API_KEY = "YOUR_API_KEY_HERE";
       
       // Character Count Counter
       const descInput = document.getElementById("description");
@@ -327,7 +329,7 @@
         `;
 
         // Build Prompt according to requirements
-        const prompt = `Act as an expert Social Media Marketer. Take the following details and create a viral Facebook post. Tone: ${tone}. Short Details: ${description}. Link: ${url || "No Link Provided"}. Structure the post into 4 parts: 1. A catchy hook as the first line. 2. Main benefits using bullet points and relevant emojis. 3. A clear Call to Action pointing to the link. 4. 3 to 5 trending and relevant hashtags. Write naturally and avoid sounding robotic.`;
+        const prompt = `Act as an expert Social Media Marketer. Take the following details and create a viral Facebook post. Tone: ${tone}. Short Details: ${description}. Link: ${url || "No Link Provided"}. Keep the post extremely short, concise, and to the point (under 120 words total). Structure the post into 4 short parts: 1. A catchy hook as the first line. 2. 2 to 3 main benefits using short bullet points and relevant emojis. 3. A clear, direct Call to Action pointing to the link. 4. 3 to 5 trending and relevant hashtags. Write naturally, keep sentences brief and punchy, and avoid sounding robotic.`;
 
         try {
           let textResult = "";
