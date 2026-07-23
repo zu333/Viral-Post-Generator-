@@ -279,9 +279,7 @@
       // ADMIN CONFIGURATION
       // -------------------------------------------------------------
       // 1. Enter your Google Gemini API Key here (Required for production hosting):
-      // NOTE: In this development/preview environment, leave this as "YOUR_API_KEY_HERE"
-      // because the app automatically uses the secure server-side proxy.
-      const API_KEY = "YOUR_API_KEY_HERE";
+      const API_KEY = "AQ.Ab8RN6LWLbmh2DasSLrXsb1GwsIvXyYPkaWf89i8u8yb8PoKZg";
       
       // Character Count Counter
       const descInput = document.getElementById("description");
@@ -390,7 +388,25 @@
             }
 
             if (!textResult) {
-              throw lastError || new Error("Failed to generate content with any of the supported models.");
+              const isLocalOrPreview = window.location.hostname === "localhost" || 
+                                       window.location.hostname === "127.0.0.1" || 
+                                       window.location.hostname.includes("run.app");
+              if (isLocalOrPreview) {
+                console.warn("Direct REST call failed. Falling back to server-side generation proxy...");
+                const response = await fetch("/api/generate", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ prompt: prompt })
+                });
+                if (response.ok) {
+                  const data = await response.json();
+                  textResult = data.text || "";
+                } else {
+                  throw lastError || new Error("Failed to generate content.");
+                }
+              } else {
+                throw lastError || new Error("Failed to generate content with any of the supported models.");
+              }
             }
 
           } else {
