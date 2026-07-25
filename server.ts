@@ -14,18 +14,18 @@ async function startServer() {
   // JSON parsing middleware
   app.use(express.json());
 
-  // API route for generation (used when API_KEY is placeholder inside index.html)
+  // API route for generation (used when API_KEY is placeholder or provided by client)
   app.post("/api/generate", async (req, res) => {
     try {
-      const { prompt } = req.body;
+      const { prompt, clientApiKey } = req.body;
       if (!prompt) {
         return res.status(400).json({ error: "Prompt is required in the request body." });
       }
 
-      const apiKey = process.env.GEMINI_API_KEY;
+      const apiKey = (clientApiKey && clientApiKey !== "YOUR_API_KEY_HERE") ? clientApiKey : process.env.GEMINI_API_KEY;
       if (!apiKey) {
         return res.status(500).json({ 
-          error: "Gemini API key is not configured on the server. Please add your key in Settings > Secrets." 
+          error: "Gemini API key is not configured. Please add your key in Settings > Secrets or in const API_KEY." 
         });
       }
 
