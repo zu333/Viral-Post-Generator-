@@ -59,19 +59,25 @@ async function startServer() {
         ]);
       };
 
-      try {
-        // Try gemini-3.5-flash first with a 9-second timeout
-        text = await withTimeout(generateWithModel("gemini-3.5-flash"), 9000);
-        console.log("Successfully generated post using gemini-3.5-flash.");
-      } catch (err: any) {
-        console.warn(`gemini-3.5-flash failed or timed out (${err.message}). Falling back to gemini-3.1-flash-lite...`);
-        // Fallback to gemini-3.1-flash-lite
-        text = await generateWithModel("gemini-3.1-flash-lite");
-        console.log("Successfully generated post using fallback model gemini-3.1-flash-lite.");
+      const modelsToTry = ["gemini-2.5-flash", "gemini-1.5-flash", "gemini-3.5-flash", "gemini-3.1-flash-lite"];
+      let lastServerError: any = null;
+
+      for (const modelName of modelsToTry) {
+        try {
+          console.log(`Attempting server generation with model: ${modelName}...`);
+          text = await withTimeout(generateWithModel(modelName), 10000) || "";
+          if (text) {
+            console.log(`Successfully generated post using ${modelName}.`);
+            break;
+          }
+        } catch (err: any) {
+          console.warn(`Model ${modelName} failed or timed out: ${err.message}`);
+          lastServerError = err;
+        }
       }
 
       if (!text) {
-        throw new Error("The Gemini model returned an empty response. Please try again.");
+        throw lastServerError || new Error("The Gemini model returned an empty response. Please try again.");
       }
 
       res.json({ text });
