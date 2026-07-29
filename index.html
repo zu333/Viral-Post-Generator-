@@ -430,9 +430,9 @@
           console.error("Generation Error:", error);
           let displayError = error.message || "Failed to generate post. Please check your network connection or API Key configuration.";
           
-          // Detect invalid credential format (e.g. AQ.Ab... OAuth token instead of AIzaSy... API key)
-          if (displayError.includes("invalid authentication credentials") || displayError.includes("Expected OAuth 2") || (API_KEY && API_KEY.startsWith("AQ."))) {
-            displayError = `⚠️ Invalid API Key Format (Ghalat Key Format):\n\nAap ne jo string di he ("${API_KEY.substring(0, 12)}...") ye aik OAuth session token he, Gemini API Key nahi he.\n\nGoogle Gemini API Keys hamesha "AIzaSy..." se shuru hoti hain.\n\nKey hasil karne ka tariqa:\n1. https://aistudio.google.com/app/apikey par jayein.\n2. "Create API key" par click karein.\n3. Jo key "AIzaSy..." se shuru ho usay copy kar ke yahan lagayein.`;
+          // REMOVED THE INVALID "AQ." CHECK HERE!
+          if (displayError.includes("invalid authentication credentials") || displayError.includes("Expected OAuth 2")) {
+            displayError = `⚠️ API Key Error: Authentication failed. Please verify that your API key is active and correct.`;
           }
 
           errorText.textContent = displayError;
