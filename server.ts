@@ -22,7 +22,7 @@ async function startServer() {
         return res.status(400).json({ error: "Prompt is required in the request body." });
       }
 
-      const apiKey = (clientApiKey && clientApiKey !== "YOUR_API_KEY_HERE") ? clientApiKey : process.env.GEMINI_API_KEY;
+      const apiKey = process.env.GEMINI_API_KEY || ((clientApiKey && clientApiKey.startsWith("AIzaSy")) ? clientApiKey : null);
       if (!apiKey) {
         return res.status(500).json({ 
           error: "Gemini API key is not configured. Please add your key in Settings > Secrets or in const API_KEY." 

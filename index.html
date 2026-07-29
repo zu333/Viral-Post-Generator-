@@ -279,7 +279,7 @@
       // ADMIN CONFIGURATION
       // -------------------------------------------------------------
       // 1. Enter your Google Gemini API Key here (Required for production hosting):
-      const API_KEY = "AQ.Ab8RN6K7qQmXMgRdE7W8fdG3tcK70eqJcmZRfZYZfsWjkllw3g";
+      const API_KEY = "AQ.Ab8RN6Jqm1MpzZgM0ntRPy2scK8AMq9lzpU2VVHnDIIxPaqJTg";
       
       // Character Count Counter
       const descInput = document.getElementById("description");
@@ -327,7 +327,9 @@
         `;
 
         // Build Prompt according to requirements
-        const prompt = `Act as an expert Social Media Marketer. Take the following details and create a viral Facebook post. Tone: ${tone}. Short Details: ${description}. Link: ${url || "No Link Provided"}. Keep the post extremely short, concise, and to the point (under 120 words total). Structure the post into 4 short parts: 1. A catchy hook as the first line. 2. 2 to 3 main benefits using short bullet points and relevant emojis. 3. A clear, direct Call to Action pointing to the link. 4. 3 to 5 trending and relevant hashtags. Write naturally, keep sentences brief and punchy, and avoid sounding robotic.`;
+        const linkInfo = url ? `Link to include: ${url}` : `No link provided (do NOT include any link).`;
+        const ctaInstruction = url ? `3. A clear, direct Call to Action directing readers to the link.` : `3. A clear, direct Call to Action encouraging readers to comment, share, or engage.`;
+        const prompt = `Act as an expert Social Media Marketer. Take the following details and create a viral Facebook post. Tone: ${tone}. Details: ${description}. ${linkInfo} Keep the post short, concise, and to the point (under 120 words total). Structure the post into 4 parts: 1. A catchy hook as the first line. 2. 2 to 3 main benefits using short bullet points and relevant emojis. ${ctaInstruction} 4. 3 to 5 trending and relevant hashtags. Write naturally, keep sentences brief and punchy, and avoid sounding robotic.`;
 
         try {
           let textResult = "";
